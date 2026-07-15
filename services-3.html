@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services — MESSOLD</title>
+    
+    <!-- Premium Geist Typeface -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist-sans@1.0.1/dist/geist-sans.css">
+    
+    <style>
+        :root {
+            --bg-clean: #FFFFFF;
+            --text-dark: #000000;
+            --text-gray: #6E6E73;
+            --border-fine: rgba(0, 0, 0, 0.06);
+            --border-bold: #000000;
+            --font-main: 'Geist Sans', -apple-system, sans-serif;
+            --ease-custom: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-clean);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Ambient subtle grain */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            opacity: 0.015;
+            z-index: 9999;
+            pointer-events: none;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* CUSTOM MAGIC CURSOR */
+        #customCursor {
+            width: 8px;
+            height: 8px;
+            background-color: var(--text-dark);
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 99999;
+            transition: width 0.3s var(--ease-custom), height 0.3s var(--ease-custom), background-color 0.3s;
+        }
+
+        .hover-state #customCursor {
+            width: 45px;
+            height: 45px;
+            background-color: transparent;
+            border: 1px solid var(--text-dark);
+        }
+
+        /* --- WRAPPERS & RESPONSIVE CONTAINERS --- */
+        .page-width {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 6%;
+        }
+
+        /* Tightened section padding for premium density */
+        .ms-section {
+            padding: 5rem 0;
+            border-bottom: 1px solid var(--border-fine);
+        }
+
+        /* --- HEADER NAVIGATION --- */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-fine);
+        }
+
+        .brand-logo {
+            font-size: 0.9rem;
+            font-weight: 900;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .btn-connect {
+            background-color: var(--text-dark);
+            color: var(--bg-clean);
+            border: none;
+            padding: 0.65rem 1.5rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-connect:hover {
+            opacity: 0.85;
+        }
+
+        /* --- HERO STAGE --- */
+        .hero-section {
+            padding: 4rem 0 6rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        .hero-title-area {
+            max-width: 680px;
+        }
+
+        .meta-tag {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .hero-title-area h1 {
+            font-size: clamp(2.2rem, 5.5vw, 4rem);
+            font-weight: 200;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+        }
+
+        .hero-title-area h1 span {
+            font-weight: 800;
+        }
+
+        /* Panoramic Filmstrip Container */
+        .filmstrip-container {
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            position: relative;
+            height: 320px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .filmstrip-track {
+            display: flex;
+            gap: 2rem;
+            position: absolute;
+            left: 0;
+            padding-left: 6%;
+            transition: transform 0.15s ease-out;
+        }
+
+        .filmstrip-card {
+            width: 280px;
+            height: 210px;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-fine);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.03);
+            background-color: #FAFAFA;
+            transition: transform 0.6s var(--ease-custom);
+        }
+
+        .filmstrip-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s var(--ease-custom);
+        }
+
+        /* Alternate Offset Layout Angles */
+        .filmstrip-card:nth-child(1) { transform: rotate(-3deg) translateY(-10px); }
+        .filmstrip-card:nth-child(2) { transform: rotate(2deg) translateY(10px); }
+        .filmstrip-card:nth-child(3) { transform: rotate(-2deg) translateY(-5px); }
+        .filmstrip-card:nth-child(4) { transform: rotate(4deg) translateY(8px); }
+        .filmstrip-card:nth-child(5) { transform: rotate(-3deg) translateY(-3px); }
+
+        .filmstrip-card:hover {
+            transform: rotate(0deg) scale(1.05) translateY(0);
+            z-index: 10;
+        }
+
+        /* --- COMPACT & REFINED BRAND LOGO LINE --- */
+        .compact-brand-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            padding: 2.2rem 0;
+            border-top: 1px solid var(--border-fine);
+            border-bottom: 1px solid var(--border-fine);
+        }
+
+        .brand-pill {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-dark);
+            opacity: 0.4;
+            transition: opacity 0.3s;
+        }
+
+        .brand-pill:hover {
+            opacity: 1;
+        }
+
+        /* --- PORTFOLIO SERVICES ASYMMETRIC MASONRY --- */
+        .services-layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem 4.5rem; /* Precise editorial gap control */
+            padding: 1.5rem 2%; /* Symmetrical left/right internal padding */
+        }
+
+        @media (max-width: 850px) {
+            .services-layout-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+                padding: 0;
+            }
+        }
+
+        .service-column-card {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .service-visual-wrapper {
+            width: 100%;
+            aspect-ratio: 1.2;
+            overflow: hidden;
+            border: 1px solid var(--border-fine);
+            background-color: #FAFAFA;
+            position: relative;
+            margin-bottom: 1.8rem;
+            transition: transform 0.8s var(--ease-custom);
+        }
+
+        /* Intentionally Tilted Design Frame Offsets */
+        .card-odd .service-visual-wrapper {
+            transform: rotate(-1.5deg) translateY(-5px);
+        }
+
+        .card-even .service-visual-wrapper {
+            transform: rotate(1.5deg) translateY(5px);
+        }
+
+        .service-visual-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s var(--ease-custom);
+        }
+
+        .service-column-card:hover .service-visual-wrapper {
+            transform: rotate(0deg) scale(1.02) translateY(0);
+        }
+
+        .service-column-card:hover .service-visual-wrapper img {
+            transform: scale(1.03);
+        }
+
+        .service-num {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--text-gray);
+            letter-spacing: 0.15em;
+            display: block;
+            margin-bottom: 0.6rem;
+        }
+
+        .service-heading {
+            font-size: clamp(1.4rem, 3vw, 1.9rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .service-description {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+            max-width: 480px;
+        }
+
+        .service-tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            list-style: none;
+        }
+
+        .service-tag-cloud li {
+            font-size: 0.65rem;
+            font-weight: 700;
+            border: 1px solid var(--border-bold);
+            padding: 0.35rem 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 30px;
+        }
+
+        /* --- SIMULATOR MATRIX --- */
+        .sim-chassis {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (max-width: 850px) {
+            .sim-chassis { grid-template-columns: 1fr; gap: 2.5rem; }
+        }
+
+        .sim-control-box {
+            background-color: #FBFBFB;
+            border: 1px solid var(--border-fine);
+            padding: 3rem;
+        }
+
+        @media (max-width: 600px) {
+            .sim-control-box { padding: 1.8rem; }
+        }
+
+        .sim-input-group {
+            margin-bottom: 2rem;
+        }
+
+        .sim-input-group label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+        }
+
+        .custom-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 2px;
+            background: var(--border-bold);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--text-dark);
+        }
+
+        .sim-output-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .sim-stat-box span {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-gray);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .sim-stat-box h3 {
+            font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+            font-weight: 200;
+        }
+
+        /* --- VIDEO TESTIMONIALS SLIDER SECTION --- */
+        .testimonial-slider-area {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .slider-window {
+            display: flex;
+            gap: 2.5rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; /* Hide standard scrollbar */
+            scroll-behavior: smooth;
+            padding: 1rem 0;
+        }
+
+        .slider-window::-webkit-scrollbar {
+            display: none;
+        }
+
+        .testimonial-card {
+            flex: 0 0 450px;
+            scroll-snap-align: start;
+            background: #FAFAFA;
+            border: 1px solid var(--border-fine);
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 480px;
+            transition: transform 0.4s var(--ease-custom);
+        }
+
+        @media (max-width: 600px) {
+            .testimonial-card { flex: 0 0 90%; min-height: 420px; padding: 1.8rem; }
+        }
+
+        .video-box-frame {
+            width: 100%;
+            height: 180px;
+            background: #000;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+        }
+
+        .video-box-frame video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.75;
+            transition: opacity 0.3s;
+        }
+
+        .video-box-frame:hover video {
+            opacity: 0.95;
+        }
+
+        .play-indicator-badge {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-clean);
+            color: var(--text-dark);
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 900;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .quote-block {
+            font-size: 1rem;
+            line-height: 1.6;
+            font-weight: 300;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .client-profile-footer {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-top: 1px solid var(--border-fine);
+            padding-top: 1.2rem;
+        }
+
+        .avatar-dot {
+            width: 32px;
+            height: 32px;
+            background-color: var(--text-dark);
+            color: var(--bg-clean);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .client-info h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 0.1rem;
+        }
+
+        .client-info span {
+            font-size: 0.7rem;
+            color: var(--text-gray);
+        }
+
+        /* Slider Controls */
+        .slider-nav-arrows {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .arrow-btn {
+            width: 40px; height: 40px;
+            border: 1px solid var(--text-dark);
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .arrow-btn:hover {
+            background: var(--text-dark);
+            color: var(--bg-clean);
+        }
+
+        /* --- FAQ GRID LAYOUT --- */
+        .faq-box {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .faq-row {
+            border-bottom: 1px solid var(--border-fine);
+            padding: 1.8rem 0;
+            cursor: pointer;
+        }
+
+        .faq-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-title {
+            font-size: 1.05rem;
+            font-weight: 400;
+        }
+
+        .faq-icon {
+            font-size: 1.2rem;
+            font-weight: 200;
+            transition: transform 0.4s var(--ease-custom);
+        }
+
+        .faq-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s var(--ease-custom);
+        }
+
+        .faq-body p {
+            padding-top: 1.2rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-gray);
+        }
+
+        .faq-row.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        /* --- PREMIUM COMPACT FOOTER --- */
+        .footer {
+            border-top: 1px solid var(--border-fine);
+            padding: 6rem 0 3rem 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 3fr 1.5fr 1.5fr 3fr;
+            gap: 3.5rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (max-width: 850px) {
+            .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+        }
+
+        .footer-column label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .footer-column a {
+            display: block;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-bottom: 0.7rem;
+            transition: opacity 0.3s;
+        }
+
+        .footer-column a:hover {
+            opacity: 0.5;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-fine);
+            padding-top: 2rem;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="customCursor"></div>
+
+    <!-- NAVIGATION -->
+    <nav class="page-width nav-bar">
+        <div class="brand-logo trigger-pointer">MESSOLD</div>
+        <button class="btn-connect trigger-pointer">Connect</button>
+    </nav>
+
+    <!-- HERO STAGE -->
+    <header class="page-width hero-section">
+        <div class="hero-title-area">
+            <span class="meta-tag">Frictionless Systems</span>
+            <h1>Frameworks designed to <span>Accelerate Output.</span></h1>
+        </div>
+        
+        <!-- FLUID TILTED OVERLAPPING DECK -->
+        <div class="filmstrip-container" id="filmstripViewport">
+            <div class="filmstrip-track" id="filmstripTrack">
+                <div class="filmstrip-card trigger-pointer">
+                    <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=600&q=80" alt="Dynamic Frame One">
+                </div>
+                <div class="filmstrip-card trigger-pointer">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80" alt="Dynamic Frame Two">
+                </div>
+                <div class="filmstrip-card trigger-pointer">
+                    <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=600&q=80" alt="Dynamic Frame Three">
+                </div>
+                <div class="filmstrip-card trigger-pointer">
+                    <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80" alt="Dynamic Frame Four">
+                </div>
+                <div class="filmstrip-card trigger-pointer">
+                    <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80" alt="Dynamic Frame Five">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- COMPACT & POLISHED CLIENT ROSTER -->
+    <section class="page-width">
+        <div class="compact-brand-bar">
+            <div class="brand-pill trigger-pointer">Google</div>
+            <div class="brand-pill trigger-pointer">Meta Partners</div>
+            <div class="brand-pill trigger-pointer">Shopify Plus</div>
+            <div class="brand-pill trigger-pointer">Y-Combinator</div>
+            <div class="brand-pill trigger-pointer">Klaviyo Elite</div>
+        </div>
+    </section>
+
+    <!-- SERVICES ASYMMETRIC MASONRY -->
+    <section class="page-width ms-section">
+        <span class="meta-tag" style="margin-bottom: 3.5rem;">Capabilities Portfolio</span>
+        
+        <div class="services-layout-grid">
+            
+            <!-- Web Dev -->
+            <div class="service-column-card card-odd trigger-pointer">
+                <div class="service-visual-wrapper">
+                    <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80" alt="Web Development Portfolio">
+                </div>
+                <span class="service-num">01 / STRUCTURAL ENGINE</span>
+                <h3 class="service-heading">Web-Development</h3>
+                <p class="service-description">Interactive, high-speed custom code architectures configured around web-vitals and custom APIs.</p>
+                <ul class="service-tag-cloud">
+                    <li>React / Next.js</li>
+                    <li>Headless</li>
+                    <li>APIs</li>
+                </ul>
+            </div>
+
+            <!-- Performance Marketing -->
+            <div class="service-column-card card-even trigger-pointer">
+                <div class="service-visual-wrapper">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="Performance Marketing Assets">
+                </div>
+                <span class="service-num">02 / CAPITAL SCALE</span>
+                <h3 class="service-heading">Performance Marketing</h3>
+                <p class="service-description">Programmatic conversion loops structured to scale customer acquisition securely and profitably.</p>
+                <ul class="service-tag-cloud">
+                    <li>Conversion API</li>
+                    <li>CPA Modeling</li>
+                    <li>Funnel Build</li>
+                </ul>
+            </div>
+
+            <!-- AI Operations -->
+            <div class="service-column-card card-odd trigger-pointer">
+                <div class="service-visual-wrapper">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="AI Architecture">
+                </div>
+                <span class="service-num">03 / MACHINE INTEGRATION</span>
+                <h3 class="service-heading">AI and Automation</h3>
+                <p class="service-description">Eliminating administrative friction. Dynamic system workflows engineered to drive automation loops cleanly.</p>
+                <ul class="service-tag-cloud">
+                    <li>Task Pipelines</li>
+                    <li>Sync Protocols</li>
+                    <li>LLM Config</li>
+                </ul>
+            </div>
+
+            <!-- Graphic Design -->
+            <div class="service-column-card card-even trigger-pointer">
+                <div class="service-visual-wrapper">
+                    <img src="https://images.unsplash.com/photo-1561070791-26c113006238?auto=format&fit=crop&w=800&q=80" alt="Design Assets Studio">
+                </div>
+                <span class="service-num">04 / STARK VISUALS</span>
+                <h3 class="service-heading">Graphic Design</h3>
+                <p class="service-description">Dynamic and striking design ecosystems crafted to claim instant market visibility across all communication channels.</p>
+                <ul class="service-tag-cloud">
+                    <li>Visual Systems</li>
+                    <li>Assets Production</li>
+                    <li>Brand Manual</li>
+                </ul>
+            </div>
+
+            <!-- Social Media -->
+            <div class="service-column-card card-odd trigger-pointer">
+                <div class="service-visual-wrapper">
+                    <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80" alt="Social Media Setup">
+                </div>
+                <span class="service-num">05 / ORGANIC LOOPS</span>
+                <h3 class="service-heading">Social Media</h3>
+                <p class="service-description">Sustained organic social positioning tailored to generate community authority and platform engagement.</p>
+                <ul class="service-tag-cloud">
+                    <li>Strategy Run</li>
+                    <li>Curation</li>
+                    <li>Copywriting</li>
+                </ul>
+            </div>
+
+            <!-- UGC & Influencers -->
+            <div class="service-column-card card-even trigger-pointer">
+                <div class="service-visual-wrapper">
+                    <img src="https://images.unsplash.com/photo-1552581230-c0137413876e?auto=format&fit=crop&w=800&q=80" alt="UGC Collaborations">
+                </div>
+                <span class="service-num">06 / INFLUENCE LOOPS</span>
+                <h3 class="service-heading">UGC & Influencers</h3>
+                <p class="service-description">Creator integrations structured to synthesize direct-response content directly with scaling metrics.</p>
+                <ul class="service-tag-cloud">
+                    <li>Talent Match</li>
+                    <li>Ad Amplification</li>
+                    <li>Organic Run</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- REAL-TIME YIELD SIMULATOR -->
+    <section class="page-width ms-section">
+        <div class="sim-chassis">
+            <div>
+                <span class="meta-tag">Interactive Matrix</span>
+                <h2 style="font-size: 1.8rem; font-weight: 300; letter-spacing: -0.03em; margin-bottom: 1rem;">Project Yield Projections</h2>
+                <p style="font-size: 0.9rem; color: var(--text-gray); line-height: 1.6;">Interact directly with system parameters to map direct yield forecasts based on core metrics scaling.</p>
+            </div>
+            
+            <div class="sim-control-box">
+                <div class="sim-input-group">
+                    <label>Allocated Investment <span id="valSpend">$30,000</span></label>
+                    <input type="range" class="custom-slider trigger-pointer" id="spendRange" min="5000" max="250000" step="5000" value="30000">
+                </div>
+                <div class="sim-input-group" style="margin-bottom: 2.5rem;">
+                    <label>Conversion Efficiency <span id="valConv">2.5%</span></label>
+                    <input type="range" class="custom-slider trigger-pointer" id="convRange" min="0.5" max="10" step="0.1" value="2.5">
+                </div>
+
+                <div class="sim-output-grid">
+                    <div class="sim-stat-box">
+                        <span>Expected Conversions</span>
+                        <h3 id="statOrders">2,500</h3>
+                    </div>
+                    <div class="sim-stat-box">
+                        <span>Estimated Yield Value</span>
+                        <h3 id="statRevenue">$175,000</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EDITORIAL VIDEO TESTIMONIAL SLIDER -->
+    <section class="page-width ms-section">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem;">
+            <div>
+                <span class="meta-tag">Client Telemetry</span>
+                <h2 style="font-size: 1.8rem; font-weight: 300; letter-spacing: -0.03em;">What We Engineered</h2>
+            </div>
+            <!-- Slider navigation buttons -->
+            <div class="slider-nav-arrows">
+                <button class="arrow-btn trigger-pointer" id="prevSlide">←</button>
+                <button class="arrow-btn trigger-pointer" id="nextSlide">→</button>
+            </div>
+        </div>
+
+        <div class="testimonial-slider-area">
+            <div class="slider-window" id="testimonialWindow">
+                
+                <!-- Testimonial Video Card 1 -->
+                <div class="testimonial-card trigger-pointer">
+                    <div class="video-box-frame" onclick="togglePlayVideo(this)">
+                        <video loop muted playsinline src="https://assets.mixkit.co/videos/preview/mixkit-working-late-in-a-modern-office-42251-large.mp4"></video>
+                        <div class="play-indicator-badge">PLAY</div>
+                    </div>
+                    <blockquote class="quote-block">
+                        "The migration to a headless commerce architecture scaled our mobile checkouts dramatically while halving bounce rates on organic entries."
+                    </blockquote>
+                    <div class="client-profile-footer">
+                        <div class="avatar-dot">A</div>
+                        <div class="client-info">
+                            <h4>Alexander Vance</h4>
+                            <span>Technical Director, Aura Labs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial Video Card 2 -->
+                <div class="testimonial-card trigger-pointer">
+                    <div class="video-box-frame" onclick="togglePlayVideo(this)">
+                        <video loop muted playsinline src="https://assets.mixkit.co/videos/preview/mixkit-man-working-on-his-laptop-at-home-42284-large.mp4"></video>
+                        <div class="play-indicator-badge">PLAY</div>
+                    </div>
+                    <blockquote class="quote-block">
+                        "Automating our customer flows and building automated system scripts freed up internal teams and kept acquisition targets highly scalable."
+                    </blockquote>
+                    <div class="client-profile-footer">
+                        <div class="avatar-dot">M</div>
+                        <div class="client-info">
+                            <h4>Maya Sterling</h4>
+                            <span>VP Operations, Matrix Commerce</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial Video Card 3 -->
+                <div class="testimonial-card trigger-pointer">
+                    <div class="video-box-frame" onclick="togglePlayVideo(this)">
+                        <video loop muted playsinline src="https://assets.mixkit.co/videos/preview/mixkit-corporate-woman-working-with-colleagues-in-office-42267-large.mp4"></video>
+                        <div class="play-indicator-badge">PLAY</div>
+                    </div>
+                    <blockquote class="quote-block">
+                        "The brand identity rebuild shifted our positioning completely. Our visual conversion metric grew by over 40% across native channels."
+                    </blockquote>
+                    <div class="client-profile-footer">
+                        <div class="avatar-dot">H</div>
+                        <div class="client-info">
+                            <h4>Helena Rostova</h4>
+                            <span>Creative Director, Vanguard Co</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- INQUIRY MATRICES (FAQs) -->
+    <section class="page-width ms-section">
+        <span class="meta-tag" style="text-align: center; display: block; margin-bottom: 2.5rem;">Inquiry Matrix</span>
+        
+        <div class="faq-box">
+            <div class="faq-row trigger-pointer">
+                <div class="faq-head">
+                    <span class="faq-title">Are design deliverables tailored to specific brand guidelines?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-body">
+                    <p>Yes. Every user interface, creative canvas, and brand asset is meticulously hand-drawn or coded to fit your precise identity parameters.</p>
+                </div>
+            </div>
+
+            <div class="faq-row trigger-pointer">
+                <div class="faq-head">
+                    <span class="faq-title">How is performance-driven tracking executed?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-body">
+                    <p>We configure direct server-side APIs and custom tags to capture high-fidelity metrics cleanly, ensuring compliant and reliable user-data collection.</p>
+                </div>
+            </div>
+
+            <div class="faq-row trigger-pointer">
+                <div class="faq-head">
+                    <span class="faq-title">What technology stacks do you support?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-body">
+                    <p>We work across custom JavaScript architectures (React, Next.js), headless commerce structures, server integrations, and Shopify Plus setups.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PREMIUM COMPACT FOOTER -->
+    <footer class="footer">
+        <div class="page-width">
+            <div class="footer-grid">
+                <div>
+                    <div class="brand-logo" style="margin-bottom: 1.2rem;">MESSOLD</div>
+                    <p style="font-size: 0.75rem; color: var(--text-gray); line-height: 1.6;">
+                        An IIT-founded collective of performance engineers specializing in custom e-commerce web systems and performance marketing execution.
+                    </p>
+                </div>
+                <div class="footer-column">
+                    <label>Explore</label>
+                    <a href="#" class="trigger-pointer">Home</a>
+                    <a href="#" class="trigger-pointer">Our Work</a>
+                    <a href="#" class="trigger-pointer">Services</a>
+                </div>
+                <div class="footer-column">
+                    <label>Connect</label>
+                    <a href="#" class="trigger-pointer">LinkedIn</a>
+                    <a href="#" class="trigger-pointer">Instagram</a>
+                    <a href="#" class="trigger-pointer">GitHub</a>
+                </div>
+                <div class="footer-column">
+                    <label>Telemetry</label>
+                    <p style="font-size: 0.7rem; color: var(--text-gray); margin-bottom: 0.8rem; line-height: 1.5;">
+                        Subscribe to get early strategic industry updates directly from our desk.
+                    </p>
+                    <input type="email" placeholder="Corporate email" style="background: none; border: none; border-bottom: 1px solid var(--border-bold); color: var(--text-dark); padding: 0.4rem 0; outline: none; width: 100%; font-size: 0.75rem;">
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>
+                    <p>Synergy Building, IIT Delhi, Hauz Khas-110016</p>
+                </div>
+                <div>
+                    © 2026 Messold Technologies. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE ENGINE -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. MAGNETIC CURSOR LOGIC
+            const cursor = document.getElementById("customCursor");
+            document.addEventListener("mousemove", (e) => {
+                cursor.style.left = `${e.clientX}px`;
+                cursor.style.top = `${e.clientY}px`;
+            });
+
+            document.addEventListener("mouseover", (e) => {
+                if (e.target.closest(".trigger-pointer")) {
+                    document.body.classList.add("hover-state");
+                }
+            });
+
+            document.addEventListener("mouseout", (e) => {
+                if (e.target.closest(".trigger-pointer")) {
+                    document.body.classList.remove("hover-state");
+                }
+            });
+
+            // 2. HERO TILTED FILMSTRIP DRIFT ENGINE
+            const filmstripTrack = document.getElementById("filmstripTrack");
+            const filmstripViewport = document.getElementById("filmstripViewport");
+
+            window.addEventListener("mousemove", (e) => {
+                const winWidth = window.innerWidth;
+                const ratio = e.clientX / winWidth;
+                const maxTravel = filmstripTrack.scrollWidth - winWidth + (winWidth * 0.1);
+                
+                if (maxTravel > 0) {
+                    filmstripTrack.style.transform = `translateX(-${ratio * maxTravel}px)`;
+                }
+            });
+
+            // 3. THE PERFORMANCE CALCULATOR ENGINE
+            const spend = document.getElementById("spendRange");
+            const conv = document.getElementById("convRange");
+            const valSpend = document.getElementById("valSpend");
+            const valConv = document.getElementById("valConv");
+            
+            const statOrders = document.getElementById("statOrders");
+            const statRevenue = document.getElementById("statRevenue");
+
+            function solveMetrics() {
+                const spendVal = parseFloat(spend.value);
+                const convVal = parseFloat(conv.value);
+
+                valSpend.textContent = `$${spendVal.toLocaleString()}`;
+                valConv.textContent = `${convVal.toFixed(1)}%`;
+
+                const simulatedCPA = 30 / (convVal / 2.5);
+                const calculatedOrders = Math.round(spendVal / simulatedCPA);
+                const estimatedAOV = 70;
+                const totalRevenueValue = calculatedOrders * estimatedAOV;
+
+                statOrders.textContent = calculatedOrders.toLocaleString();
+                statRevenue.textContent = `$${totalRevenueValue.toLocaleString()}`;
+            }
+
+            spend.addEventListener("input", solveMetrics);
+            conv.addEventListener("input", solveMetrics);
+            solveMetrics();
+
+            // 4. TESTIMONIAL VIDEO PLAYER CONTROL
+            window.togglePlayVideo = function(frame) {
+                const video = frame.querySelector("video");
+                const badge = frame.querySelector(".play-indicator-badge");
+
+                if (video.paused) {
+                    video.play();
+                    badge.textContent = "PAUSE";
+                } else {
+                    video.pause();
+                    badge.textContent = "PLAY";
+                }
+            };
+
+            // 5. TESTIMONIAL SLIDER NAV BUTTONS
+            const sliderWindow = document.getElementById("testimonialWindow");
+            const prevBtn = document.getElementById("prevSlide");
+            const nextBtn = document.getElementById("nextSlide");
+
+            prevBtn.addEventListener("click", () => {
+                sliderWindow.scrollBy({ left: -480, behavior: "smooth" });
+            });
+
+            nextBtn.addEventListener("click", () => {
+                sliderWindow.scrollBy({ left: 480, behavior: "smooth" });
+            });
+
+            // 6. FAQ ACCORDION SYSTEM
+            const faqRows = document.querySelectorAll(".faq-row");
+            faqRows.forEach(row => {
+                row.addEventListener("click", () => {
+                    const isOpen = row.classList.contains("active");
+
+                    faqRows.forEach(item => {
+                        item.classList.remove("active");
+                        item.querySelector(".faq-body").style.maxHeight = "0";
+                    });
+
+                    if (!isOpen) {
+                        row.classList.add("active");
+                        const innerBody = row.querySelector(".faq-body");
+                        innerBody.style.maxHeight = `${innerBody.scrollHeight}px`;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
